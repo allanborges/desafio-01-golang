@@ -110,7 +110,7 @@ func insereNovaCotacao(db *sql.DB, cotacao *Cotacao) {
 	}
 	defer stmt.Close()
 	cotacaoUSDBRL := cotacao.USDBRL
-	_, err = stmt.Exec(cotacaoUSDBRL.Code, cotacaoUSDBRL.Codein, cotacaoUSDBRL.Name,
+	_, err = stmt.ExecContext(ctx, cotacaoUSDBRL.Code, cotacaoUSDBRL.Codein, cotacaoUSDBRL.Name,
 		cotacaoUSDBRL.High, cotacaoUSDBRL.Low, cotacaoUSDBRL.VarBid,
 		cotacaoUSDBRL.PctChange, cotacaoUSDBRL.Bid, cotacaoUSDBRL.Ask, cotacaoUSDBRL.Timestamp, cotacaoUSDBRL.CreateDate)
 	if err != nil {
