@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -60,6 +61,7 @@ func main() {
 		cotacao := manipulaResposta(w)
 		insereNovaCotacao(db, cotacao)
 	})
+	fmt.Println("Iniciando o servidor...")
 	http.ListenAndServe(":8080", nil)
 }
 
