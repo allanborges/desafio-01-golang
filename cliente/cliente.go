@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"io"
 	"log"
 	"net/http"
@@ -11,6 +12,10 @@ import (
 
 type CotacaoResultado struct {
 	Bid float64 `json:"bid"`
+}
+
+type CotacaoGravar struct {
+	Dolar float64
 }
 
 func main() {
@@ -29,10 +34,13 @@ func main() {
 	if err != nil {
 		log.Println("falha ao receber o resultado da cotacao:", err)
 	}
-	arquivo, err := os.OpenFile("resultadoCotacao.txt", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	var cotacao CotacaoResultado
+	json.Unmarshal(resRead, &cotacao)
+	arquivo, err := os.OpenFile("cotacao.txt", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	defer arquivo.Close()
 	if err != nil {
 		panic(err)
 	}
-	arquivo.Write(resRead)
+	encoder := json.NewEncoder(arquivo)
+	encoder.Encode(CotacaoGravar{Dolar: cotacao.Bid})
 }
